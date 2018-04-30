@@ -1,0 +1,172 @@
+</!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title></title>
+	<style>
+		#output{
+			font-size: 1.5em;
+		}
+
+		.icard{
+			height: 160px;
+			width: 120px;
+			padding: 3px;
+			border: 1px solid black;
+			background-color: white;
+			border-radius: 10px;
+			position: absolute;
+			left: 100px;
+			display: inline-block;
+			font-family: 'Lato';
+		}
+
+		.top-card{
+			font-size: 30px;
+			line-height: 20px;
+			left: 2px;
+			top: 2px;
+
+		}
+		.contentOfCard{
+
+			text-align: center;
+			font-size: 70px;
+
+		}
+		.buttom-card {
+			font-size: 30px;
+			line-height: 20px;
+			right: 2px;
+			bottom: 2px;
+			transform: rotate(-180deg);
+			-webkit-transform: rotate(-180deg);
+			-moz-transform: rotate(-180deg);
+			-o-transform: rotate(-180deg);
+		}
+
+		.hearts .suit::after{
+			content: '\2665';
+		}
+		.diams .suit::after{
+			content: '\2666';
+		}
+
+		.spades .suit::after{
+			content: '\2660';
+		}
+		.clubs .suit::after{
+			content: '\2663';
+		}
+
+		#dealerHolder,
+		#playerHolder{
+			height: 180px;
+			width: 500px;
+		}
+
+		.club, .spades{
+			color: black;
+		}
+
+		.hearts, .diams{
+			color: red;
+		}
+	</style>
+</head>
+<body>
+	<div>
+		<div id="message">
+			Press Start Button
+		</div>
+		<div id="start">
+			<button id="btnStart" type="button" onclick="Start()" class="btn">Start Game</button>
+		</div>
+	</div>
+	<div id="output">
+		dealer hand: <div id="dealerHolder"></div>
+		player hand: <div id ="playerHolder"></div>
+	</div>
+
+
+	<script>
+		var cards = [];
+		var playersCard = [];
+		var dealerCard = [];
+		var cardcount = 0;
+		var suits = ["spades", "hearts","clubs", "diams"];
+		var cardNumb = ["A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"];
+		var output = document.getElementById("output");
+		var dealerHolder = document.getElementById("dealerHolder");
+		var playerHolder = document.getElementById("playerHolder");
+
+
+		for(s in suits){
+			var suit = suits[s][0].toUpperCase();
+			var backgroundColor = (suit == "S" || suit == "C") ? "black" : "red";
+			for(n in cardNumb){
+				console.log(cardNumb[n]);
+				// output.innerHTML += " <span style='color:" +backgroundColor+" '> &"+ suits[s]+ ";"+cardNumb[n] + " </span> ";
+				var cardValue = (n>9) ? 10 : parseInt(n)+1	
+				var card = {
+					suit: suit,
+					icon: suits[s],
+					backgroundColor:backgroundColor,
+					cardNum: cardNumb[n],
+					cardValue:cardValue
+				}
+				cards.push(card);
+			}
+			console.log(suits[s]);
+		}
+		console.log(cards);
+			
+		function Start(){
+			//outputCard();
+			shuffleDeck(cards);
+			dealNew();
+		}
+		// var randomNum = Math.floor((Math.random()*52));
+		// output.innerHTML += " <span style='color:" + cards[randomNum].backgroundColor+ "'> &" + cards[randomNum].icon + ";" + cards[randomNum].cardNum+ 
+		// "</span>";}
+
+		function dealNew(){
+			playersCard = [];
+			dealerCard = [];//clears out the cards
+			dealerHolder.innerHTML = "";
+			playerHolder.innerHTML = "";
+			for(x=0; x<2; x++){
+				dealerCard.push(cards[cardcount]);
+				dealerHolder.innerHTML += cardOutput(cardcount,x);
+				cardcount++
+				playerCard.push(cards[cardcount]);
+				playerHolder.innerHTML += cardOutput(cardcount,x);
+				cardcount++
+			}
+			console.log(dealerCard);
+			console.log(playerCard);
+		}
+
+		function cardOutput(n, x){
+			var hpos =(x>0)?x*60+100:100;
+			return '<div class="icard '+cards[n].icon+'" style="left:'+hpos+'px;"> <div class="top-card suit">'+cards[n].cardNum+'<br> </div> <div class="contentOfCard suit"></div><div class ="buttom-card suit">'+cards[n].cardNum+'<br></div></div>';
+		}
+
+		function shuffleDeck(array){
+			for(var i = array.length -1; i>0; i--){
+				var j= Math.floor(Math.random()* (i+1));
+				var temp = array[i];
+				array[i] = array[j];
+				array[j] = temp;
+			}
+				return array;
+			}
+
+		function outputCard(){
+			output.innerHTML += "<span style='color:" + cards[cardcount].backgroundColor+ "'> " + cards[cardcount].cardNum+ 
+		"&" + cards[cardcount].icon + "; </span>";
+	}
+		
+	</script>
+</body>
+</html>
